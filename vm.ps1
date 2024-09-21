@@ -110,7 +110,7 @@ az network lb rule create `
   --idle-timeout 4 `
   --load-distribution Default
 
-az vm resize $rgname myResourceGroup --name web2 --size Standard_DS2_v2
+az vm resize $rgname myResourceGroup --name web1 --size Standard_DS2_v2
 
 
 
