@@ -48,16 +48,11 @@ az network nsg create `
   --resource-group $rgname `
   --name webNSG 
 
-
-
 az network vnet subnet update `
   --resource-group $rgname `
   --vnet-name $vnetname `
   --name $subnet `
   --network-security-group webNSG
-
-
-
 
 az network nsg rule create `
   --resource-group $rgname  `
@@ -82,5 +77,38 @@ az network nsg rule create `
   --direction Inbound `
   --source-address-prefixes '*' `
   --destination-address-prefixes '*'
+
+  az network public-ip create `
+  --resource-group $rgname `
+  --name lbPublicIP `
+  --sku Standard
+
+
+az network lb create `
+  --resource-group $rgname `
+  --name ntmsLoadBalancer `
+  --sku Standard `
+  --frontend-ip-name ntmsFrontend `
+  --public-ip-address lbPublicIP
+
+az network lb probe create `
+  --resource-group $rgname `
+  --lb-name ntmsLoadBalancer `
+  --name ntmsHealthProbe `
+  --protocol Tcp `
+  --port 80
+
+az network lb rule create `
+  --resource-group $rgname `
+  --lb-name ntmsLoadBalancer `
+  --name ntmsLoadBalancingRule `
+  --protocol Tcp `
+  --frontend-port 80 `
+  --backend-port 80 `
+  --frontend-ip-name ntmsFrontend `
+  --probe-name ntmsHealthProbe `
+  --idle-timeout 4 `
+  --load-distribution Default
+
 
 
