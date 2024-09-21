@@ -44,3 +44,43 @@ for ($i = 1; $i -le $vmCount; $i++) {
         --settings '{\"commandToExecute\": \"powershell Add-WindowsFeature Web-Server\"}'
 }
 
+az network nsg create `
+  --resource-group $rgname `
+  --name webNSG 
+
+
+
+az network vnet subnet update `
+  --resource-group $rgname `
+  --vnet-name $vnetname `
+  --name $subnet `
+  --network-security-group webNSG
+
+
+
+
+az network nsg rule create `
+  --resource-group $rgname  `
+  --nsg-name webNSG `
+  --name Allow-RDP `
+  --protocol Tcp `
+  --priority 1000 `
+  --destination-port-ranges 3389 `
+  --access Allow `
+  --direction Inbound `
+  --source-address-prefixes '*' `
+  --destination-address-prefixes '*'
+
+az network nsg rule create `
+  --resource-group $rgname  `
+  --nsg-name webNSG `
+  --name Allow-http `
+  --protocol Tcp `
+  --priority 1001 `
+  --destination-port-ranges 80 `
+  --access Allow `
+  --direction Inbound `
+  --source-address-prefixes '*' `
+  --destination-address-prefixes '*'
+
+
