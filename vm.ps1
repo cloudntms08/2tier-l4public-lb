@@ -6,7 +6,7 @@ $vmBaseName = "web"
 $size = "standard_DS1_v2"
 $vnetname = "ntmsvnet"
 $subnet = "webSubnet"
-$vmCount = "6"
+$vmCount = "8"
 
 
 az group create -n $rgname -l $location
